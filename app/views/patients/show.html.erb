@@ -1,0 +1,29 @@
+<style type="text/css">
+	
+	body{
+		background-color: #ededed;
+	}
+
+</style>
+<p id="notice"><%= notice %></p>
+
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"><%= @patient.name.upcase %></h3>
+    <%= @patient.age %> anos - <%= @patient.email.capitalize %>
+  </div>
+</div>
+<br>
+<div class="card border " style="width: 60%">
+	<div class="card-header text-center bg-info text-white">
+		<h4>Planejamentos Alimentares</h4>
+	</div>
+	<ul class="list-group list-group-flush">
+		<% @patient.food_plannings.each do |food_planning| %>
+			<li class="list-group-item "><h7><%= food_planning.created_at.strftime("%d-%m-%Y")%></h7> - <span class="card-subtitle mb-2 text-muted"> valido ate <%= food_planning.date_finish.strftime("%d-%m-%Y") unless food_planning.date_start.nil?%></span></li>
+		<% end %>
+	</ul>
+</div>
+<!-- 
+<%= link_to 'Edit', edit_patient_path(@patient) %> |
+<%= link_to 'Back', patients_path %> -->

@@ -1,0 +1,48 @@
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<p id="notice"><%= notice %></p>
+
+<h1>Patients</h1>
+
+<table id="table_pacientes" class="table table-striped table-bordered" style="width:100%">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Email</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @patients.each do |patient| %>
+      <tr>
+        <td><%= patient.name.capitalize %></td>
+        <td><%= patient.age %></td>
+        <td><%= patient.email.capitalize %></td>
+        <td>
+          <a class="btn btn-sm btn-primary" href="/patients/<%= patient.id %>"><i class="fas fa-address-card"></i></a>
+          <a class="btn btn-sm btn-primary" href="/patients/<%= patient.id %>/edit"><i class="fas fa-edit"></i></a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Patient', new_patient_path %>
+
+<script type="text/javascript">
+    
+    tabela_pacientes = null;
+
+    $(function() {
+      tabela_pacientes = $("#table_pacientes").DataTable();
+    })
+</script>
+
+
