@@ -1,0 +1,2 @@
+class TypeMeal < ApplicationRecord
+end

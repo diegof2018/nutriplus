@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Type Meals</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @type_meals.each do |type_meal| %>
+      <tr>
+        <td><%= type_meal.name %></td>
+        <td><%= link_to 'Show', type_meal %></td>
+        <td><%= link_to 'Edit', edit_type_meal_path(type_meal) %></td>
+        <td><%= link_to 'Destroy', type_meal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Type Meal', new_type_meal_path %>

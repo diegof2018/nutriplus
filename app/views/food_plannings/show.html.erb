@@ -2,7 +2,7 @@
 
 <p>
   <strong>Patient:</strong>
-  <%= @food_planning.patient %>
+  <%= @food_planning.meals.inspect %>
 </p>
 
 <p>
@@ -15,5 +15,55 @@
   <%= @food_planning.date_finish %>
 </p>
 
-<%= link_to 'Edit', edit_food_planning_path(@food_planning) %> |
-<%= link_to 'Back', food_plannings_path %>
+
+
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+	<div class="carousel-item active">
+  		<div class="row">
+  			
+  		</div>
+  	</div>   
+
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+<script type="text/javascript">
+	
+	$(function(){
+
+		load_meals();
+		
+	})
+
+	function load_meals(){
+		<% @food_planning.meals.each_with_index do |meal, index| %>
+		  		console.log($('.carousel-item > .row')[$('.carousel-item > .row').length-1].getElementsByClassName('ref').length);
+		  		if($('.carousel-item > .row')[$('.carousel-item > .row').length-1].getElementsByClassName('ref').length <= 3){
+		  			div = document.createElement('div');
+		  			div.setAttribute('class', 'col-md-4 ref');
+
+		  			div_card = document.createElement('div');
+		  			div_card.setAttribute('class','card');
+
+		  			div_card_body = document.createElement('div');
+		  			div_card_body.setAttribute('class','card-body');
+		  			div_card_body.append("<%= meal.type_meal.name %>");
+		  			div_card.append(div_card_body);
+		  			div.append(div_card);
+					$('.carousel-item > .row')[$('.carousel-item > .row').length-1].append(div);
+		  		} else {
+
+		  		}
+	  	<% end %>
+	}
+
+</script>

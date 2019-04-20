@@ -20,7 +20,7 @@
 	</div>
 	<ul class="list-group list-group-flush">
 		<% @patient.food_plannings.each do |food_planning| %>
-			<li class="list-group-item "><h7><%= food_planning.created_at.strftime("%d-%m-%Y")%></h7> - <span class="card-subtitle mb-2 text-muted"> valido ate <%= food_planning.date_finish.strftime("%d-%m-%Y") unless food_planning.date_start.nil?%></span></li>
+			<li class="list-group-item " onclick="location.href='../food_plannings/<%= food_planning.id%>'"><h7><%= food_planning.created_at.strftime("%d-%m-%Y")%></h7> - <span class="card-subtitle mb-2 text-muted"> valido ate <%= food_planning.date_finish.strftime("%d-%m-%Y") unless food_planning.date_start.nil?%></span></li>
 		<% end %>
 	</ul>
 </div>
