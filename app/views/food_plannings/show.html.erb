@@ -64,22 +64,37 @@
 </div>
 
 <div class="modal fade" id="modal_new_meal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      
+      <div class="modal-body"></div>
     </div>
   </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_new_meal">
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_new_meal">
   Launch demo modal
 </button>
+ -->
 
-<%= link_to 'Add meal', new_meal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_new_meal', class: 'btn btn-primary btn-lg'}  %>
+<%= link_to "#", class: "btn btn-warning edit",
+		    data: {     
+		      url: new_meal_path(),
+		      toggle: "modal",
+		      target: "#modal_new_meal"} do %>
+		  <i class="glyphicon glyphicon-edit glyphicon-white"></i>
+		  Nova Refeição
+		<% end %>
+
 <script type="text/javascript">
 	
 	$(function(){
 		$(".carousel").carousel('pause')
+
+		$('#modal_new_meal').on("show.bs.modal", function(e) {    
+	    	$(this).find('.modal-body').load(e.relatedTarget.dataset.url, function(){
+		    	
+		    });
+		});
 	})
 
 </script>

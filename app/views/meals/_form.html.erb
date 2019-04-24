@@ -1,4 +1,4 @@
-<%= form_with(model: meal, local: true) do |form| %>
+<%= form_with(model: meal, remote: true) do |form| %>
   <% if meal.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(meal.errors.count, "error") %> prohibited this meal from being saved:</h2>
@@ -10,18 +10,95 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :type_meal_id %>
-    <%= form.text_field :type_meal_id %>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label>Refeição</label>
+      <%= select_type_meals %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= form.label :values %>
-    <%= form.text_field :values %>
+  <h4>Adicionar Alimentos</h4>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label>Alimento</label>
+      <%= select_foods %>
+    </div>
+    <div class="col-md-2">
+      <label>Qtd</label>
+      <input type="number" class="form-control" name="qtd_food" id="qtd_food">
+    </div>
+    <div class="col-md-2">
+      <label>Medida</label>
+      <input type="text" class="form-control">
+    </div>
+    <div class="col">
+      <label>&#32;</label>
+      <input type="button" class="btn btn-block btn-success text-white" value="Adicionar" onclick="add_food()">
+    </div>
   </div>
-
+  <hr/>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="list-group" id="list_of_foods">
+        
+      </ul>
+      
+    </div>
+  </div>
+  <br>
+  
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  
+  food_list = {};
+
+  function add_food(){
+    food = $("#foods").val();
+    qtd = $("#qtd_food").val();
+
+    if(food != "" && qtd != "" && qtd > 0){
+      food_list[food] = {name: $("#foods option:selected").text(), qtd: qtd};  
+      fill_list();
+      reset_fields();
+    }  else {
+      if(food == ""){
+        $("#foods").removeClass("is-valid").addClass("is-invalid")
+      } else {
+        $("#foods").removeClass("is-invalid").addClass("is-valid")
+      }
+      if(qtd == "" || qtd <= 0){
+        $("#qtd_food").removeClass("is-valid").addClass("is-invalid")
+      } else {
+        $("#qtd_food").removeClass("is-invalid").addClass("is-valid")
+      }
+    }
+    
+    
+
+  }
+
+  function fill_list(){
+    html = "";
+    $.each(food_list, function (food_id, data) {
+      html += '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+              data.name + " - " +
+              data.qtd +
+          '<span class="badge badge-primary badge-pill">x</span></li>'
+    })
+
+    $("#list_of_foods").html(html);
+  }
+
+  function reset_fields(){
+    $("#foods").val("");
+    $("#foods").removeClass("is-invalid is-valid");
+
+    $("#qtd_food").val("");
+    $("#qtd_food").removeClass("is-invalid is-valid");
+
+  }
+
+</script>

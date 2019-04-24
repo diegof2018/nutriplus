@@ -14,10 +14,10 @@ class MealsController < ApplicationController
 
   # GET /meals/new
   def new
+    puts "tesste"
     @meal = Meal.new
     respond_to do |format|
-      format.html
-      format.js 
+      format.js { render partial: "form", locals: { meal: @meal }}
     end
   end
 
