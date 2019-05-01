@@ -1,4 +1,9 @@
-<%= form_with(model: meal, remote: true) do |form| %>
+
+<style type="text/css">
+  
+
+</style>
+<%= form_with(model: meal, remote: true, id:"form-new-meal") do |form| %>
   <% if meal.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(meal.errors.count, "error") %> prohibited this meal from being saved:</h2>
@@ -12,9 +17,15 @@
   <% end %>
   <div class="row">
     <div class="form-group col-md-6">
+      <%= hidden_field(:meal, :food_planning_id) %>
+      <%= hidden_field(:meal, :values) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
       <label>Refeição</label>
       <%= select_type_meals %>
-    </div>
+    </div>  
   </div>
   <h4>Adicionar Alimentos</h4>
   <div class="row">
@@ -23,12 +34,16 @@
       <%= select_foods %>
     </div>
     <div class="col-md-2">
-      <label>Qtd</label>
+      <label>Quantidade</label>
       <input type="number" class="form-control" name="qtd_food" id="qtd_food">
     </div>
     <div class="col-md-2">
       <label>Medida</label>
-      <input type="text" class="form-control">
+      <!-- <input type="text" class="form-control" id="medida_food"> -->
+      <select class="form-control" id='medida_food' >
+        <option value="Mililitros">Mililitro</option>
+        <option value="Gramas">Grama</option>
+      </select>
     </div>
     <div class="col">
       <label>&#32;</label>
@@ -47,7 +62,7 @@
   <br>
   
   <div class="actions">
-    <%= form.submit %>
+    <input type="button" class="btn btn-primary btn-sm" onclick="validate_form();" value="Confimar">
   </div>
 <% end %>
 
@@ -55,24 +70,39 @@
   
   food_list = {};
 
+  $('#medida_food').selectpicker();
+  $('#foods').selectpicker({liveSearch:true, title:"Selecione um Alimento"});
+  $("#meal_type_meal_id").selectpicker({liveSearch:true, title:"Selecione o Tipo da Refeição"});
+
+  $(".bootstrap-select").css("border", "1px solid #c9c9c9");
+
+  fill_list();
+
   function add_food(){
     food = $("#foods").val();
     qtd = $("#qtd_food").val();
+    medida = $("#medida_food").val();
 
-    if(food != "" && qtd != "" && qtd > 0){
-      food_list[food] = {name: $("#foods option:selected").text(), qtd: qtd};  
+    if(food != "" && qtd != "" && qtd > 0 && medida != ""){
+      food_list[food] = {name: $("#foods option:selected").text(), qtd: qtd, medida: medida};  
       fill_list();
       reset_fields();
     }  else {
       if(food == ""){
-        $("#foods").removeClass("is-valid").addClass("is-invalid")
+        $("#foods").parent().removeClass("is-valid").addClass("is-invalid")
       } else {
-        $("#foods").removeClass("is-invalid").addClass("is-valid")
+        $("#foods").parent().removeClass("is-invalid").addClass("is-valid")
       }
       if(qtd == "" || qtd <= 0){
         $("#qtd_food").removeClass("is-valid").addClass("is-invalid")
       } else {
         $("#qtd_food").removeClass("is-invalid").addClass("is-valid")
+      }
+
+      if(medida == ""){
+        $("#medida_food").parent().removeClass("is-valid").addClass("is-invalid")
+      } else {
+        $("#medida_food").parent().removeClass("is-invalid").addClass("is-valid")
       }
     }
     
@@ -82,23 +112,52 @@
 
   function fill_list(){
     html = "";
-    $.each(food_list, function (food_id, data) {
-      html += '<li class="list-group-item d-flex justify-content-between align-items-center">' +
-              data.name + " - " +
-              data.qtd +
-          '<span class="badge badge-primary badge-pill">x</span></li>'
-    })
+    if(Object.keys(food_list).length > 0){
+      $.each(food_list, function (food_id, data) {
+        html += '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+                data.name + " - " +
+                data.qtd + " " + data.medida +
+            '<span class="badge badge-primary badge-pill" onclick="remove_food_from_list('+food_id+')" style="cursor:pointer">x</span></li>'
+      })  
+    } else {
+      html = "<div class='text-center'>Sem Alimentos para a refeição</div>";
+    }
+    
 
     $("#list_of_foods").html(html);
   }
 
   function reset_fields(){
+    $('#foods').selectpicker('deselectAll');
+
     $("#foods").val("");
-    $("#foods").removeClass("is-invalid is-valid");
+    $('#foods').selectpicker('render')
+    $("#foods").parent().removeClass("is-invalid is-valid");
 
     $("#qtd_food").val("");
     $("#qtd_food").removeClass("is-invalid is-valid");
 
+    // $("#medida_food").val("");
+    $("#medida_food").parent().removeClass("is-invalid is-valid");
+  }
+
+  function validate_form(){
+    if($("#meal_type_meal_id").val() != ""){
+      if(Object.keys(food_list).length > 0){
+        $("#meal_values").val(JSON.stringify(food_list));
+        $("form").submit();  
+      } else {
+        toastr.options = {"preventDuplicates": true};
+        toastr.warning("Adicione pelo menos 1 alimento!"); 
+      }
+    } else {
+      $("#meal_type_meal_id").parent().addClass("is-invalid");
+    }   
+  }
+
+  function remove_food_from_list(food_id){
+    delete food_list[food_id];
+    fill_list();
   }
 
 </script>

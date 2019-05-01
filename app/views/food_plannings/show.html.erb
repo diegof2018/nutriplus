@@ -1,54 +1,76 @@
-<p id="notice"><%= notice %></p>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/js/bootstrap-select.min.js"></script>
 
-<p>
-  <strong>Patient:</strong>
-  
-</p>
+<br>
+<div class="card">
+  <div class="card-body">
+    <h4>PLANEJAMENTO ALIMENTAR</h4>
+    <h6>Descrição</h6>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><span class="badge badge-primary">Status: Ativo</span></li>
+  </ul>
 
-<p>
-  <strong>Date start:</strong>
-  <%= @food_planning.date_start %>
-</p>
+</div>
+<br>
 
-<p>
-  <strong>Date finish:</strong>
-  <%= @food_planning.date_finish %>
-</p>
-
-
+<H4 class="text-center">REFEIÇÕES</H4>
+<br>
 
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner col-md-11">
+  <div class="carousel-inner col-md-12 text-center">
   	<% @food_planning.meals.each_with_index do |meal, index| %>
   		<% if index == 0 %>
   			<div class="carousel-item active">
-  				<div class="row">
-  					<div class=" offset-md-2 col-md-3">
-  						<div class="card"> <div class="card-body"> <%= meal.type_meal.name%> </div> </div>
-  					</div>
+  				<div class="row offset-md-1">
+            <div class="card-deck col-md-11">
+  						<div class="card border-primary">
+                <div class="card-header border-primary">
+                  <h5><%= meal.type_meal.name%></h5>
+                </div>
+                <div class="card-body">  
+  							<% JSON.parse(meal.values).each do |x|  %> <%= x[1]["name"] %> - <%= x[1]["qtd"] %> <%= x[1]["medida"] %> <br><% end %> </div>
+  				</div>
 			<% if index == (@food_planning.meals.size - 1) %>
 				</div>
 			</div>
+      </div>
 			<% end %>
   		<% elsif index % 3 != 0 %>
-  			<div class="col-md-3">
-				<div class="card"> <div class="card-body"> <%= meal.type_meal.name%> </div> </div>
+
+				<div class="card border-primary"> 
+          <div class="card-header border-primary">
+            <h5><%= meal.type_meal.name%></h5>
+          </div>
+          <div class="card-body">
+					<% JSON.parse(meal.values).each do |x|  %> <%= x[1]["name"] %> - <%= x[1]["qtd"] %> <%= x[1]["medida"] %> <br><% end %> 
 				</div>
+
+			</div>
   			<% if index == (@food_planning.meals.size - 1) %>
 				</div>
 			</div>
+    </div>
 			<% end %>
   		<% else %>
   				</div>
   			</div>
+      </div>
   			<div class="carousel-item">
-  				<div class="row">
-  					<div class="offset-md-2 col-md-3">
-  						<div class="card"> <div class="card-body"> <%= meal.type_meal.name%> </div> </div>
-  					</div>
+  				<div class="row offset-md-1">
+              <div class="card-deck col-md-11">
+  						<div class="card border-primary"> 
+                <div class="card-header border-primary">
+                  <h5><%= meal.type_meal.name%></h5>
+                </div>
+                <div class="card-body"> <%= meal.type_meal.name%> <br>
+						<% JSON.parse(meal.values).each do |x|  %> <%= x[1]["name"] %> - <%= x[1]["qtd"] %> <%= x[1]["medida"] %> <br><% end %>
+  						</div> </div>
+
 			<% if index == (@food_planning.meals.size - 1) %>
 				</div>
 			</div>
+    </div>
 			<% end %>
   		<% end %>
   	<%end%>
@@ -71,14 +93,9 @@
   </div>
 </div>
 
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_new_meal">
-  Launch demo modal
-</button>
- -->
-
 <%= link_to "#", class: "btn btn-warning edit",
 		    data: {     
-		      url: new_meal_path(),
+		      url: new_meal_path(food_planning_id: @food_planning.id),
 		      toggle: "modal",
 		      target: "#modal_new_meal"} do %>
 		  <i class="glyphicon glyphicon-edit glyphicon-white"></i>
@@ -88,13 +105,21 @@
 <script type="text/javascript">
 	
 	$(function(){
-		$(".carousel").carousel('pause')
+		$("#carouselExampleControls").carousel('pause');
 
 		$('#modal_new_meal').on("show.bs.modal", function(e) {    
 	    	$(this).find('.modal-body').load(e.relatedTarget.dataset.url, function(){
 		    	
 		    });
 		});
+
+		// load_meals_food();
 	})
+
+	// function load_meals_food(){
+	// 	$.each((".card-meals-foods"), function(index){
+
+	// 	})
+	// }
 
 </script>

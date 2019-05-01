@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_012700) do
+ActiveRecord::Schema.define(version: 2019_04_30_030659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "food_categories", force: :cascade do |t|
+    t.string "name"
+    t.json "options"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "food_plannings", force: :cascade do |t|
     t.bigint "patient_id"
@@ -28,6 +35,34 @@ ActiveRecord::Schema.define(version: 2019_04_24_012700) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "food_category_id"
+    t.float "umidade"
+    t.integer "energia_kc"
+    t.integer "energia_kj"
+    t.float "proteina"
+    t.float "lipideos"
+    t.integer "colesterol"
+    t.float "carboidrato"
+    t.float "fibra_alimentar"
+    t.float "cinzas"
+    t.float "calcio"
+    t.float "magnesio"
+    t.float "manganes"
+    t.float "fosforo"
+    t.float "ferro"
+    t.integer "sodio"
+    t.integer "potassio"
+    t.float "cobre"
+    t.float "zinco"
+    t.integer "retinol"
+    t.integer "re"
+    t.integer "rae"
+    t.float "tiamina"
+    t.float "riboflavina"
+    t.float "piridoxina"
+    t.float "niacina"
+    t.float "vitamina_c"
+    t.index ["food_category_id"], name: "index_foods_on_food_category_id"
   end
 
   create_table "meals", force: :cascade do |t|
@@ -55,6 +90,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_012700) do
   end
 
   add_foreign_key "food_plannings", "patients"
+  add_foreign_key "foods", "food_categories"
   add_foreign_key "meals", "food_plannings"
   add_foreign_key "meals", "type_meals"
 end

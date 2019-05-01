@@ -14,8 +14,9 @@ class MealsController < ApplicationController
 
   # GET /meals/new
   def new
-    puts "tesste"
     @meal = Meal.new
+    @meal.food_planning_id = params[:food_planning_id];
+    
     respond_to do |format|
       format.js { render partial: "form", locals: { meal: @meal }}
     end
@@ -73,6 +74,6 @@ class MealsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def meal_params
-      params.require(:meal).permit(:type_meal_id, :values)
+      params.require(:meal).permit(:type_meal_id, :values, :food_planning_id)
     end
 end
