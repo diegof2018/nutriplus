@@ -1,10 +1,7 @@
-<style type="text/css">
-	
-	body{
-		background-color: #ededed;
-	}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" />
 
-</style>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
 <p id="notice"><%= notice %></p>
 
 <div class="card">
@@ -24,6 +21,35 @@
 		<% end %>
 	</ul>
 </div>
+<br>
+
+<div class="modal fade" id="modal_new_foodplan" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+      	<h4>Planejamento Alimentar</h4>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
+<%= link_to "#", class: "btn btn-info btn-sm",
+    data: {     
+      url: new_food_planning_path(patient_id: @patient.id),
+      toggle: "modal",
+      target: "#modal_new_foodplan"} do %>
+  Adicionar
+<% end %>
+
 <!-- 
 <%= link_to 'Edit', edit_patient_path(@patient) %> |
 <%= link_to 'Back', patients_path %> -->
+
+<script>
+	$('#modal_new_foodplan').on("show.bs.modal", function(e) {    
+    	$(this).find('.modal-body').load(e.relatedTarget.dataset.url, function(){
+	    	
+	    });
+	});
+</script>

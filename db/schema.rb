@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_030659) do
+ActiveRecord::Schema.define(version: 2019_05_08_005306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,9 @@ ActiveRecord::Schema.define(version: 2019_04_30_030659) do
     t.datetime "date_finish"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
+    t.integer "status"
+    t.text "days_week", default: ["f", "f", "f", "f", "f", "f", "f"], array: true
     t.index ["patient_id"], name: "index_food_plannings_on_patient_id"
   end
 
@@ -71,6 +74,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_030659) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "food_planning_id"
+    t.time "hour"
     t.index ["food_planning_id"], name: "index_meals_on_food_planning_id"
     t.index ["type_meal_id"], name: "index_meals_on_type_meal_id"
   end

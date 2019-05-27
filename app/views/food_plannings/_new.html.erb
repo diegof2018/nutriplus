@@ -1,0 +1,54 @@
+<%= form_with(model: food_planning, remote: true) do |form| %>
+  <% if food_planning.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(food_planning.errors.count, "error") %> prohibited this meal from being saved:</h2>
+
+      <ul>
+      <% food_planning.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= hidden_field(:food_planning, :patient_id) %>
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label>Descrição</label>
+      <%= form.text_field :description, class:"form-control" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label>Data Inicio</label>
+      <%= date_field(:food_planning, :date_start, class: "form-control") %>
+    </div>
+    <div class="col-md-6">
+      <label>Data Fim</label>
+      <%= date_field(:food_planning, :date_finish, class: "form-control") %>
+    </div>
+  </div>
+  <hr>
+  <h5>Dias da Semana</h5>
+  <div class="row">
+    <div class="col-md-12">
+      Selecione os dias da semana para este plano alimentar.
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <button class="btn btn-sm btn-dark">Domingo</button>
+      <button class="btn btn-sm btn-primary">Segunda-Feira</button>
+      <button class="btn btn-sm btn-primary">Terça-Feira</button>
+      <button class="btn btn-sm btn-primary">Quarta-Feira</button>
+      <button class="btn btn-sm btn-primary">Quinta-Feira</button>
+      <button class="btn btn-sm btn-primary">Sexta-Feira</button>
+      <button class="btn btn-sm btn-dark">Sabado</button>
+    </div>  
+  </div>
+  <br>
+  <div class="actions">
+    <input type="button" class="btn btn-primary btn-sm" onclick="validate_form();" value="Confimar">
+  </div>
+
+<% end %>

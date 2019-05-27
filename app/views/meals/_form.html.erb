@@ -25,7 +25,19 @@
     <div class="form-group col-md-6">
       <label>Refeição</label>
       <%= select_type_meals %>
-    </div>  
+    </div> 
+    <div class="form-group col-md-6">
+      <label>Horario</label>
+      <div class='input-group date' id='datetimepicker3'>
+          <input type='text' class="form-control" name="meal[hour]" id="hour_meal"/>
+          <div class="input-group-append">
+            <span class="input-group-text input-group-addon" id="inputGroupPrepend"><i class="fas fa-clock"></i></span>
+          </div>
+          <!-- <span class="input-group-append">
+              
+          </span> -->
+      </div>
+    </div>
   </div>
   <h4>Adicionar Alimentos</h4>
   <div class="row">
@@ -67,6 +79,12 @@
 <% end %>
 
 <script type="text/javascript">
+
+  $(function () {
+      $('#datetimepicker3').datetimepicker({
+          format: 'LT'
+      });
+  });
   
   food_list = {};
 

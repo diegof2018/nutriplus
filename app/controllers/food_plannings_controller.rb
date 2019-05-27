@@ -14,7 +14,11 @@ class FoodPlanningsController < ApplicationController
 
   # GET /food_plannings/new
   def new
-    @food_planning = FoodPlanning.new
+    @food_planning = Patient.find(params[:patient_id]).food_plannings.new
+    respond_to do |format|
+      # format.html { redirect_to food_plannings_url, notice: 'Food planning was successfully destroyed.' }
+      format.js { render partial: "new", locals: { food_planning: @food_planning } }
+    end
   end
 
   # GET /food_plannings/1/edit

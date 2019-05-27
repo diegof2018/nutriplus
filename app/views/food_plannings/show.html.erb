@@ -1,14 +1,26 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/css/bootstrap-select.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.10/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" />
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
 
 <br>
 <div class="card">
   <div class="card-body">
     <h4>PLANEJAMENTO ALIMENTAR</h4>
-    <h6>Descrição</h6>
+    <h6 class="text-muted"><%= @food_planning.description %></h6>
   </div>
   <ul class="list-group list-group-flush">
-    <li class="list-group-item"><span class="badge badge-primary">Status: Ativo</span></li>
+    <li class="list-group-item"><span class="badge <% if @food_planning.ativo? %> badge-success <%else%> badge-secondary <%end %>">Status: <%= @food_planning.status.upcase %></span></li>
+    <li class="list-group-item text-center">        
+      </span><h6>Dias da Semana </h6><% @food_planning.days_week.each_with_index do |dia,index|  %>
+      <% if dia == "t" %><span class="badge badge-primary" value="<%= index%>" onclick="days_of_week(this)"> <% else %> <span class="badge badge-dark" value="<%= index%>"> <% end %>
+
+       <%= t('date.day_names')[index] %> </span>
+      <% end %> 
+    </li>
+
   </ul>
 
 </div>
@@ -17,36 +29,47 @@
 <H4 class="text-center">REFEIÇÕES</H4>
 <br>
 
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="height: 400px">
   <div class="carousel-inner col-md-12 text-center">
   	<% @food_planning.meals.each_with_index do |meal, index| %>
   		<% if index == 0 %>
   			<div class="carousel-item active">
-  				<div class="row offset-md-1">
+  				<div class="row offset-md-1" style="height: 350px">
             <div class="card-deck col-md-11">
-  						<div class="card border-primary">
-                <div class="card-header border-primary">
+  						<div class="card" style="max-width: 18rem;">
+                <div class="card-header text-white bg-primary">
                   <h5><%= meal.type_meal.name%></h5>
                 </div>
                 <div class="card-body">  
-  							<% JSON.parse(meal.values).each do |x|  %> <%= x[1]["name"] %> - <%= x[1]["qtd"] %> <%= x[1]["medida"] %> <br><% end %> </div>
-  				</div>
-			<% if index == (@food_planning.meals.size - 1) %>
-				</div>
-			</div>
-      </div>
-			<% end %>
+  							 <% JSON.parse(meal.values).each do |x|  %> <%= x[1]["name"] %> - <%= x[1]["qtd"] %> <%= x[1]["medida"] %> <br><% end %> 
+                </div>
+                <div class="card-footer text-muted">
+                  <% if !meal.hour.blank? %>
+                   <i class="fas fa-clock"></i> <%= meal.hour.strftime("%H:%M") %>
+                  <% end %>
+                </div> 
+  				    </div>
+			        <% if index == (@food_planning.meals.size - 1) %>
+        				</div>
+        			</div>
+              </div>
+			        <% end %>
   		<% elsif index % 3 != 0 %>
 
-				<div class="card border-primary"> 
-          <div class="card-header border-primary">
+				<div class="card" style="max-width: 18rem;"> 
+          <div class="card-header text-white bg-primary">
             <h5><%= meal.type_meal.name%></h5>
           </div>
           <div class="card-body">
 					<% JSON.parse(meal.values).each do |x|  %> <%= x[1]["name"] %> - <%= x[1]["qtd"] %> <%= x[1]["medida"] %> <br><% end %> 
-				</div>
+				  </div>
+          <div class="card-footer text-muted">
+            <% if !meal.hour.blank? %>
+              <i class="fas fa-clock"></i> <%= meal.hour.strftime("%H:%M") %> 
+            <% end %>
+          </div> 
 
-			</div>
+			 </div>
   			<% if index == (@food_planning.meals.size - 1) %>
 				</div>
 			</div>
@@ -57,15 +80,21 @@
   			</div>
       </div>
   			<div class="carousel-item">
-  				<div class="row offset-md-1">
+  				<div class="row offset-md-1" style="height: 350px">
               <div class="card-deck col-md-11">
-  						<div class="card border-primary"> 
-                <div class="card-header border-primary">
-                  <h5><%= meal.type_meal.name%></h5>
+    						<div class="card" style="max-width: 18rem;"> 
+                  <div class="card-header bg-primary text-white">
+                    <h5><%= meal.type_meal.name%></h5>
+                  </div>
+                  <div class="card-body">
+  						      <% JSON.parse(meal.values).each do |x|  %> <%= x[1]["name"] %> - <%= x[1]["qtd"] %> <%= x[1]["medida"] %> <br><% end %>
+    						  </div>
+                  <div class="card-footer text-muted">
+                    <% if !meal.hour.blank? %>
+                      <i class="fas fa-clock"></i> <%= meal.hour.strftime("%H:%M") %>
+                    <% end %>
+                  </div> 
                 </div>
-                <div class="card-body"> <%= meal.type_meal.name%> <br>
-						<% JSON.parse(meal.values).each do |x|  %> <%= x[1]["name"] %> - <%= x[1]["qtd"] %> <%= x[1]["medida"] %> <br><% end %>
-  						</div> </div>
 
 			<% if index == (@food_planning.meals.size - 1) %>
 				</div>
@@ -104,6 +133,8 @@
 
 <script type="text/javascript">
 	
+  planning_days_week = [];
+
 	$(function(){
 		$("#carouselExampleControls").carousel('pause');
 
@@ -113,13 +144,15 @@
 		    });
 		});
 
+    <% @food_planning.days_week.each do |day| %>
+      planning_days_week.push("<%= day %>");
+    <% end %>
+
 		// load_meals_food();
 	})
 
-	// function load_meals_food(){
-	// 	$.each((".card-meals-foods"), function(index){
-
-	// 	})
-	// }
+	function days_of_week(obj){
+    planning_days_week[obj.getAttribute('value')]
+  }
 
 </script>
